@@ -28,7 +28,7 @@ preHeader_files_raw = aux
 #extra_lib_path =
 
 #------Library--Dependecies-------------------------------
-lib_depend = -pthread -luajit-5.1
+lib_depend = -pthread -lluajit-5.1
 
 #-----Excutable---------------------------------------------
 exec_files_raw = main.exe
@@ -73,7 +73,6 @@ $(preHeader_path)%.h.gch: $(header_path)%.h
 
 $(exec_files): $(object_files)
 	@echo "--> Linking"
-	@echo "-std=c++17 -Winline $^ -o $@  -L$(lib_path) $(lib_depend)"
 	@g++ -std=c++17 -Winline $^ -o $@   $(lib_depend)
 
 $(object_path)%.o: $(cpp_path)%.cpp
