@@ -28,7 +28,7 @@ preHeader_files_raw = aux
 #extra_lib_path =
 
 #------Library--Dependecies-------------------------------
-lib_depend = -pthread -luajit
+lib_depend = -pthread -luajit-5.1
 
 #-----Excutable---------------------------------------------
 exec_files_raw = main.exe
@@ -73,11 +73,12 @@ $(preHeader_path)%.h.gch: $(header_path)%.h
 
 $(exec_files): $(object_files)
 	@echo "--> Linking"
-	@g++ -std=c++17 -Winline $^ -o $@  -L $(lib_path) $(lib_depend)
+	@echo "-std=c++17 -Winline $^ -o $@  -L$(lib_path) $(lib_depend)"
+	@g++ -std=c++17 -Winline $^ -o $@   $(lib_depend)
 
 $(object_path)%.o: $(cpp_path)%.cpp
 	@echo "--> Objectify"
-	@g++ -std=c++17 -Winline -MD -MF $(depend_path)$(*).d -I $(header_path) -c $< -o $@
+	@g++ -std=c++17 -Winline -MD -MF $(depend_path)$(*).d -I$(header_path) -c $< -o $@
 
 run_again:
 
@@ -100,6 +101,8 @@ show:
 	@echo preHeader_path: $(preHeader_path)
 	@echo object_path: $(object_path)
 	@echo depend_path: $(depend_path)
+
+run_force: clean run
 
 run_debug:
 
