@@ -17,11 +17,19 @@ d_preHeader_path = $(debug_bin_path)preHeader/
 d_object_path = $(debug_bin_path)objects/
 d_depend_path = $(debug_bin_path)depend/
 
+lib_path = $(root_path)lib/
+include_path = $(root_path)include/
+
 #-----Precompiled Header Files -----------------------------
 preHeader_files_raw = aux
 
+#------Library include path ------------------------------------------
+
+#extra_lib_path =
+
 #------Library--Dependecies-------------------------------
-lib_depend = -pthread
+lib_depend = -pthread -luajit
+
 #-----Excutable---------------------------------------------
 exec_files_raw = main.exe
 
@@ -50,8 +58,13 @@ d_exec_files = $(addprefix $(debug_bin_path), $(exec_files_raw))
 -include $(depend_files)
 #--------------------------------------------------------------
 
-run: $(preHeader_files) $(exec_files) run_again
-#`pkg-config --cflags --libs jack`
+
+
+run: run_init  $(preHeader_files) $(exec_files) run_again
+
+run_init:
+	clear
+
 
 $(preHeader_path)%.h.gch: $(header_path)%.h
 
@@ -60,22 +73,33 @@ $(preHeader_path)%.h.gch: $(header_path)%.h
 
 $(exec_files): $(object_files)
 	@echo "--> Linking"
-	@g++ -std=c++17 -Winline $^ -o $@ $(lib_depend)
+	@g++ -std=c++17 -Winline $^ -o $@  -L $(lib_path) $(lib_depend)
 
 $(object_path)%.o: $(cpp_path)%.cpp
 	@echo "--> Objectify"
 	@g++ -std=c++17 -Winline -MD -MF $(depend_path)$(*).d -I $(header_path) -c $< -o $@
 
 run_again:
+
 	@echo ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	@echo ---""""""----Program-----""""""------------------
 	@echo ----------------------------------------------------------------
 	@echo
-	@$(exec_files) h
+	@$(exec_files)
 	@echo
 
 clean:
 	@-rm -f $(exec_files) $(object_path)* $(depend_path)* $(preHeader_path)*
+
+show:
+	@echo root_path: $(root_path)
+	@echo cpp_path: $(cpp_path)
+	@echo header_path: $(header_path)
+	@echo bin_path: $(bin_path)
+	@echo normal_bin_path:$(normal_bin_path)
+	@echo preHeader_path: $(preHeader_path)
+	@echo object_path: $(object_path)
+	@echo depend_path: $(depend_path)
 
 run_debug:
 
