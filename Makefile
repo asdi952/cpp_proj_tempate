@@ -21,14 +21,14 @@ lib_path = $(root_path)lib/
 include_path = $(root_path)include/
 
 #-----Precompiled Header Files -----------------------------
-preHeader_files_raw = aux
+preHeader_files_raw = c_aux
 
 #------Library include path ------------------------------------------
 
 #extra_lib_path =
 
 #------Library--Dependecies-------------------------------
-lib_depend = -pthread -lluajit-5.1
+lib_depend = -pthread 
 
 #-----Excutable---------------------------------------------
 exec_files_raw = main.exe
@@ -58,7 +58,7 @@ d_exec_files = $(addprefix $(debug_bin_path), $(exec_files_raw))
 -include $(depend_files)
 #--------------------------------------------------------------
 
-
+.DEFAULT_GOAL=run
 
 run: run_init  $(preHeader_files) $(exec_files) run_again
 
