@@ -21,7 +21,7 @@ lib_path = $(root_path)lib/
 include_path = $(root_path)include/
 
 #-----Precompiled Header Files -----------------------------
-preHeader_files_raw = c_aux
+preHeader_files_raw = pch
 
 #------Library include path ------------------------------------------
 
